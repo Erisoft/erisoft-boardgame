@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Alexander Emenheiser - One Fun, Little Music.ogg-b5941ba3c2b81aa2f62d09cf50567139.oggstr"
+
+[deps]
+
+source_file="res://assets/audio/music/Alexander Emenheiser - One Fun, Little Music.ogg"
+dest_files=[ "res://.import/Alexander Emenheiser - One Fun, Little Music.ogg-b5941ba3c2b81aa2f62d09cf50567139.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

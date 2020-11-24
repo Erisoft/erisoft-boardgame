@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/dice/six sided die.png" type="Texture" id=1]
+[ext_resource path="res://scenes/dice/Dice.gd" type="Script" id=2]
+[ext_resource path="res://assets/audio/sfx/Retro Jump 01.wav" type="AudioStream" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "roll"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.19, 0.4, 0.6, 0.8, 0.97 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 84, 85, 86, 87, 88, 89 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.51, 0.98 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -50 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 24.0
+
+[node name="Dice" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 1 )
+vframes = 15
+hframes = 6
+frame = 84
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+anims/roll = SubResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+
+[node name="sfx_jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+[connection signal="animation_finished" from="Sprite/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
