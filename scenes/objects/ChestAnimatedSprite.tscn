@@ -1,0 +1,28 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Gold Chest Animation/Gold Chest Frame 4.png" type="Texture" id=1]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Gold Chest Animation/Gold Chest Frame 2.png" type="Texture" id=2]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Gold Chest Animation/Gold Chest Frame 3.png" type="Texture" id=3]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Pink n Black Chest Animation/Pink n Black Chest Frame 2.png" type="Texture" id=4]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Gold Chest Animation/Gold Chest Frame 5 .png" type="Texture" id=5]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Pink n Black Chest Animation/Pink n Black Chest Frame 4png.png" type="Texture" id=6]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Pink n Black Chest Animation/Pink n Black Chest Frame 3.png" type="Texture" id=7]
+[ext_resource path="res://assets/Sprites/Chest Pack 1/Chest Animations/Pink n Black Chest Animation/Pink n Black Chest Frame 5.png" type="Texture" id=8]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 1 ), ExtResource( 5 ) ],
+"loop": false,
+"name": "good_chest",
+"speed": 3.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 8 ) ],
+"loop": false,
+"name": "bad_chest",
+"speed": 3.0
+} ]
+
+[node name="ChestAnimatedSprite" type="AnimatedSprite"]
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 1 )
+animation = "bad_chest"
