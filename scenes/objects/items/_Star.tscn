@@ -1,7 +1,10 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/Sprites/gdb-coinsgemsetc-1.png" type="Texture" id=1]
-[ext_resource path="res://scenes/objects/Item.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/items/_item.tscn" type="PackedScene" id=2]
+
+
+
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4

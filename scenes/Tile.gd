@@ -1,81 +1,117 @@
+tool
 extends Node2D
 
+var flag_scene = load("res://scenes/objects/items/Flag.tscn")
 
+onready var anim_player = $AnimationPlayer
+onready var item = $Items
 onready var number = $NumberLabel
 onready var parent = get_parent()
 
+#TODO: Clone event will be triggered by another game situation
+enum TileTypes{
+	NULL, COIN, HEART, STAR, CHEST_GOOD, CHEST_NORMAL, CHEST_BAD,
+	START
+	}
+export (TileTypes) var tileType
 enum DirectionTypes{UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3}
 export (DirectionTypes) var dir 
+enum ItemTypes {COLLECTABLE, BOXED}
+var itemType
 
-enum TileTypes{CREDITS, CHEST_GOOD, CHEST_BAD, START, DOPPELGANGER, SHOP}
-export (TileTypes) var tileType = TileTypes.CREDITS
+var index : int    #gets updated by enumerate_tiles in parent script
 
+var item_name : String
 
-var type : String
-export var credits : int = 100
-var moves : int
-export var empty : bool = false
+export var _has_item : bool = false setget set_has_item, get_has_item
+var _checkpoint : bool = false setget ,get_checkpoint
+func get_checkpoint():
+	return _checkpoint
 
 
 func _ready() -> void:
-	for item in $Items.get_children():
-		item.visible = false
-	update()
+	init_item_on_tile()
 
 
-func clear_tile():
-	for item in $Items.get_children():
-		item.visible = false
+func init_item_on_tile():
+	match tileType:
+		TileTypes.NULL:
+			_has_item = false
+			$Items.visible = false
+			return
+		TileTypes.COIN:
+			init_item(true, "coin", true)
+		TileTypes.HEART:
+			init_item(true, "heart", true)
+		TileTypes.STAR:
+			init_item(true, "star", true)
+		TileTypes.CHEST_GOOD:
+			init_item(true, "chest_good", false, 0)
+		TileTypes.CHEST_NORMAL:
+			init_item(true, "chest_normal", false, 0)
+		TileTypes.CHEST_BAD:
+			init_item(true, "chest_bad", false, 0)
+		TileTypes.START:
+			_has_item = true
+			item.visible = false
+			spawn_flag()
+			_checkpoint = true
+		_:
+			printerr("INVALID tile type.")
+
+
+func init_item(_item : bool, _anim_name : String, _playing : bool, _frame : int = 0, _boxed : bool = false):
+	_has_item = _item
+	item.animation = _anim_name
+	item.playing = _playing
+	item.frame = _frame
+	item_name = _anim_name
+	if _boxed == true:
+		itemType = ItemTypes.BOXED
+	else:
+		itemType = ItemTypes.COLLECTABLE
+	item.visible = true
+	item.modulate.a = 255
+
+
+func get_item_name():
+	return item_name
 
 
 func play_animation():
-	$Items.z_index = 1
-	$AnimationPlayer.play("zoom")
+	item.z_index = 10
+	if itemType == ItemTypes.COLLECTABLE:
+		anim_player.play("collecting", true)
+	elif itemType == ItemTypes.BOXED:
+		anim_player.play("opening", true)
+
+
+func remove_item():
+	_has_item = false
+	item.visible = false
+
+
+func spawn_flag():
+	var flag = flag_scene.instance()
+	add_child(flag)
+	flag.position = Vector2(5, -10)
+
+
+func set_has_item(value : bool):
+	_has_item = value
+
+
+func get_has_item():
+	return _has_item
 
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Pawns"):
-		area.set_direction(dir)
-		if tileType == TileTypes.START and parent.enabled and area.is_in_group("Players"):
-			#TODO: create a checkpoint system to reset the grid items and maybe
-			#give player a special bonus or w/e
-			print("a pawn stepped on checkpoint flag")
+		if area.has_method("set_direction"):
+			area.set_direction(dir)
 
 
 
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
-	if anim_name == "zoom":
-		$Items.z_index = 0
-		$AnimationPlayer.stop(true)
-		clear_tile()
-
-func update():
-	match tileType:
-		TileTypes.CREDITS:
-			type = "credits"
-			$Items/Coin.visible = true
-			empty = false
-		TileTypes.START:
-			type = "start"
-			empty = true
-			$Items/StartSprite.visible = true
-		TileTypes.CHEST_GOOD:
-			type = "chest_good"
-			$Items/ChestAnimatedSprite.animation = "good_chest"
-			$Items/ChestAnimatedSprite.visible = true
-#			$AnimatedSprite.play("chest_good")
-			empty = false
-		TileTypes.CHEST_BAD:
-			type = "chest_bad"
-			$Items/ChestAnimatedSprite.animation = "bad_chest"
-			$Items/ChestAnimatedSprite.visible = true
-#			$AnimatedSprite.play("chest_bad")
-			empty = false
-		TileTypes.SHOP:
-			type = "shop"
-		TileTypes.DOPPELGANGER:
-			type = "clone"
-			$Items/CloneSprite.visible = true
-			empty = false
-		_:
-			type = ""
+	if anim_name == "collecting" or "opening":
+		item.z_index = 0

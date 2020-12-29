@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+tonemap_mode = 3
+auto_exposure_min_luma = 0.0
+ssao_radius = 128.0
+ssao_intensity = 128.0
+ssao_radius2 = 128.0
+ssao_intensity2 = 128.0
+ssao_bias = 7.709
+ssao_light_affect = 0.97
+ssao_ao_channel_affect = 1.0
+ssao_quality = 2
+ssao_edge_sharpness = 32.0
+glow_strength = 0.75
+glow_bloom = 0.96
+glow_blend_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource( 1 )

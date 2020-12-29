@@ -1,27 +1,36 @@
 extends Node2D
+class_name Item
 
-
-enum ItemTypes {GOLD, REROLL, TAX, BAD_REROLL, NULL}
-export (ItemTypes) var itemType = ItemTypes.GOLD
-
-var type := ""
+export var disabled : bool
+export var amount : int
 
 
 func _ready() -> void:
-	match itemType:
-		ItemTypes.GOLD:
-			type = "Gold"
-		ItemTypes.REROLL:
-			type = "Reroll"
-		ItemTypes.TAX:
-			type = "Tax"
-		ItemTypes.BAD_REROLL:
-			type = "Bad Reroll"
-		ItemTypes.NULL:
-			type = ""
-	
-	$Label.text = type
+	pass
+
+func _physics_process(delta: float) -> void:
+	if disabled:
+		disable_item()
+	else:
+		enable_item()
 
 
-func play_animation():
-	$AnimatedSprite.play()
+func use_item():
+	z_index = 1
+	print("z index: ", z_index)
+	pass
+
+
+func enable_item():
+	pass
+
+
+func disable_item():
+	pass
+
+
+func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+	$AnimationPlayer.stop(true)
+	z_index = 0
+	print("z index: ", z_index)
+	queue_free()

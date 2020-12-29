@@ -8,25 +8,32 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Item",
+"language": "GDScript",
+"path": "res://scenes/objects/item.gd"
+} ]
 _global_script_class_icons={
-
+"Item": ""
 }
 
 [application]
 
 config/name="erisoft-boardgame"
-run/main_scene="res://scenes/Game.tscn"
+run/main_scene="res://scenes/title_screen/title_scren.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Signals="*res://singletons/Signals.gd"
+Global="*res://singletons/Global.gd"
 
 [display]
 
 window/size/width=1920
 window/size/height=1080
+window/size/always_on_top=true
 window/size/test_width=1280
 window/size/test_height=720
 window/stretch/mode="2d"
@@ -59,3 +66,14 @@ right={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="players"
+2d_physics/layer_2="enemies"
+2d_physics/layer_3="items"
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+environment/default_environment="res://default_env.tres"

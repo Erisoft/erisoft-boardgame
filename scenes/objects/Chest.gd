@@ -4,8 +4,6 @@ enum ChestTypes{GOOD, BAD}
 export (ChestTypes) var chest_type
 export var debug : bool = false
 
-onready var good_items = $GoodItems
-onready var bad_items = $BadItems
 onready var anim = $AnimationPlayer
 
 var anim_speed : float = 1.5
@@ -26,11 +24,7 @@ func _ready() -> void:
 		
 	randomize()
 	$ChestAnimatedSprite.visible = false
-	$ItemsAnimatedSprite.visible = false
-	for sprite in good_items.get_children():
-		sprite.visible = false
-	for sprite in bad_items.get_children():
-		sprite.visible = false
+	$ChestBonuses.visible = false
 
 
 func open_chest():
@@ -42,60 +36,57 @@ func open_chest():
 	else:
 		current_animation = "opening_bad"
 		anim.play(current_animation)
-#	$Timer.start()
-#	anim.play("roundup", -1, anim_speed)
-	
+
 
 func get_random_item(good : bool):
 	#hide all the items sprites, pick a random one and then show it
-	var items 
+	var frame
+	var anim_name : String
 	if good:
-		items = good_items
-	else:
-		items = bad_items 
-	for sprite in items.get_children():
-		sprite.visible = false
-	var index = randi() % items.get_child_count()
-	for i in items.get_children():
-		i.visible = false
-	items.get_child(index).visible = true
-	item_type = items.get_child(index).type
-	print("Item : ", items.get_child(index).type)
-	var item = items.get_child(index)
-	item.play_animation()
+		anim_name = "bonus"
+		$ChestBonuses.set_animation(anim_name)
+	elif !good:
+		anim_name = "malus"
+		$ChestBonuses.set_animation(anim_name)
+	
+	frame = $ChestBonuses.get_animation()
+#	for sprite in items.get_children():
+#		sprite.visible = false
+	var index = randi() % frame
+	$BonusesAnimatedSprite.frame = index
+	$BonusesAnimatedSprite.visible = true
+#	for i in items.get_children():
+#		i.visible = false
+#	items.get_child(index).visible = true
+#	item_type = items.get_child(index).type
+#	print("Item : ", items.get_child(index).type)
+#	var item = items.get_child(index)
+#	item.play_animation()
 	anim.play("zoom")
 #	Signals.emit_signal("item_collected", item_type)
 #	self.queue_free()
 
 
-func _on_Timer_timeout() -> void:
-	if anim_speed  > 0:
-		anim_speed -= 0.4
-		if chest_type == ChestTypes.GOOD:
-			anim.play("roundup_good", -1, anim_speed)
-			$sfx_zoom.pitch_scale = 1
-		else:
-			anim.play("roundup_bad", -1, anim_speed)
-			$sfx_zoom.pitch_scale = .4
-	elif anim_speed <= 0:
-		anim.stop()
-		$Timer.stop()
-		if chest_type == ChestTypes.GOOD:
-			get_random_item(true)
-		else:
-			get_random_item(false)
+func _show_bonus() -> void:
+	if chest_type == ChestTypes.GOOD:
+		$sfx_zoom.pitch_scale = 1
+		$ChestBonuses.get_random_bonus()
+	else:
+		$sfx_zoom.pitch_scale = .4
+		$ChestBonuses.get_random_bonus()
 
 
 func _on_RoundUp_animation_finished(current_animation) -> void:
 	if current_animation == "zoom":
 		$ChestAnimatedSprite.visible = false
-		$ItemsAnimatedSprite.visible = false
+		$ChestBonuses.visible = false
 
 		Signals.emit_signal("item_collected", item_type)
 		var action_type = "chest"
 		Signals.emit_signal("action_ended", action_type)
 		set_camera_current(false)
 		anim.stop(true)
+		Signals.emit_signal("chest_collected")
 		self.queue_free()
 
 
@@ -103,14 +94,10 @@ func _on_Opening_animation_finished(current_animation) -> void:
 	if current_animation == "opening_good" or "opening_bad":
 		yield(get_tree().create_timer(.5), "timeout")
 
-		$Timer.start()
-		if chest_type == ChestTypes.GOOD:
-			anim.play("roundup_good", -1, anim_speed)
-		else:
-			anim.play("roundup_bad", -1, anim_speed)
-		
 		$ChestAnimatedSprite.visible = false
-		$ItemsAnimatedSprite.visible = true
+		$ChestBonuses.visible = true
+		_show_bonus()
+		anim.play("zoom")
 
 
 func _on_Button_pressed() -> void:

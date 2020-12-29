@@ -1,0 +1,272 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://assets/fonts/SpaceMono-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/PXUI-Basic/panel_Example2.png" type="Texture" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://scenes/entities/ScreenMessage.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/UI/ui_heart.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/UI/ui.gd" type="Script" id=6]
+[ext_resource path="res://assets/fonts/SpaceMono-BoldItalic.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://scenes/UI/ui_coin.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/PXUI-Basic/panel_Example4.png" type="Texture" id=9]
+[ext_resource path="res://assets/PXUI-Basic/panel_Example3.png" type="Texture" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 22
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource( 6 )
+
+[node name="Control" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0.862745 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Top" type="MarginContainer" parent="Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -225.0
+margin_right = 225.0
+margin_bottom = 150.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Control/Top"]
+margin_right = 450.0
+margin_bottom = 150.0
+texture = ExtResource( 9 )
+
+[node name="Turns" type="HBoxContainer" parent="Control/Top/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -176.0
+margin_top = -27.0
+margin_right = -24.0
+margin_bottom = 35.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnLabel" type="Label" parent="Control/Top/TextureRect/Turns"]
+margin_top = 13.0
+margin_right = 75.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 1 )
+text = "TURN:"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ValueLabel" type="Label" parent="Control/Top/TextureRect/Turns"]
+margin_left = 79.0
+margin_top = 13.0
+margin_right = 139.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 0, 0.901961, 1 )
+text = "0000"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Laps" type="HBoxContainer" parent="Control/Top/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 32.0
+margin_top = -27.0
+margin_right = 184.0
+margin_bottom = 35.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LapsLabel" type="Label" parent="Control/Top/TextureRect/Laps"]
+margin_top = 13.0
+margin_right = 75.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 1 )
+text = "Laps:"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ValueLabel" type="Label" parent="Control/Top/TextureRect/Laps"]
+margin_left = 79.0
+margin_top = 13.0
+margin_right = 139.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 0, 0.901961, 1 )
+text = "0000"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScreenMessage" parent="Control" instance=ExtResource( 4 )]
+mouse_filter = 2
+
+[node name="Bottom" type="MarginContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -960.0
+margin_top = -240.0
+margin_right = 960.0
+rect_min_size = Vector2( 0, 240 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Bottom"]
+margin_right = 1920.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 1920, 240 )
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control/Bottom/HBoxContainer"]
+margin_right = 450.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 450, 240 )
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Bottom/HBoxContainer/TextureRect"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -218.0
+margin_top = 89.0
+margin_right = -50.0
+margin_bottom = -72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UICoin" parent="Control/Bottom/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 8 )]
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 82.0
+margin_bottom = 79.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="UIHeart" parent="Control/Bottom/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 5 )]
+margin_left = 86.0
+margin_top = 0.0
+margin_right = 168.0
+margin_bottom = 79.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Bottom/HBoxContainer/TextureRect"]
+margin_left = 48.0
+margin_top = 56.0
+margin_right = 165.0
+margin_bottom = 184.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Control/Bottom/HBoxContainer/TextureRect/VBoxContainer"]
+margin_right = 117.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 2 )
+text = "pawn name"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Control/Bottom/HBoxContainer/TextureRect/VBoxContainer"]
+position = Vector2( 56, 70.75 )
+texture = ExtResource( 3 )
+
+[node name="PanelContainer" type="TextureRect" parent="Control/Bottom/HBoxContainer"]
+margin_left = 454.0
+margin_right = 1920.0
+margin_bottom = 240.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Bottom/HBoxContainer/PanelContainer"]
+margin_left = 122.0
+margin_top = 7.0
+margin_right = 1346.0
+margin_bottom = 233.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MessageLabel" type="Label" parent="Control/Bottom/HBoxContainer/PanelContainer"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 130.0
+margin_top = -56.0
+margin_right = 1146.0
+margin_bottom = 64.0
+custom_fonts/font = SubResource( 1 )
+text = "Game messages"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RestartButton" type="Button" parent="Control/Bottom/HBoxContainer/PanelContainer"]
+margin_left = 1226.0
+margin_top = 133.0
+margin_right = 1343.0
+margin_bottom = 175.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 1, 0.117647, 0.831373, 1 )
+text = "Restart"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Control/Bottom/HBoxContainer/PanelContainer/RestartButton" to="." method="_on_RestartButton_pressed"]

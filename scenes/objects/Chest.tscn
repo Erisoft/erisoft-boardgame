@@ -1,15 +1,12 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://scenes/objects/reroll.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/objects/items/_chest_bonuses.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/objects/Chest.gd" type="Script" id=2]
-[ext_resource path="res://scenes/objects/Coin.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/objects/ChestAnimatedSprite.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/audio/sfx/Retro Impact LoFi 09.wav" type="AudioStream" id=8]
 [ext_resource path="res://assets/audio/sfx/Retro Beeep 20.wav" type="AudioStream" id=9]
 [ext_resource path="res://assets/audio/sfx/Retro PickUp 10.wav" type="AudioStream" id=10]
-[ext_resource path="res://scenes/objects/Items.tres" type="SpriteFrames" id=15]
-[ext_resource path="res://scenes/objects/badreroll.tscn" type="PackedScene" id=16]
-[ext_resource path="res://scenes/objects/tax.tscn" type="PackedScene" id=17]
+
 
 [sub_resource type="Animation" id=1]
 resource_name = "opening_bad"
@@ -191,30 +188,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ true, true ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("ItemsAnimatedSprite:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.006, 0.478 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ "ru_bad", "ru_bad" ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("ItemsAnimatedSprite:playing")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0.009, 0.171 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
 
 [sub_resource type="Animation" id=4]
 length = 0.5
@@ -232,30 +205,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [ true, true ]
 }
-tracks/1/type = "value"
-tracks/1/path = NodePath("ItemsAnimatedSprite:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.006, 0.478 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ "ru_good", "ru_good" ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("ItemsAnimatedSprite:playing")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0.009, 0.171 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
 
 [sub_resource type="Animation" id=5]
 length = 1.51
@@ -272,25 +221,13 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("GoodItems:scale")
+tracks/1/path = NodePath("ChestBonuses:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 1.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 4, 4 ) ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("BadItems:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 1.5 ),
+"times": PoolRealArray( 0.1, 1.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 3, 3 ) ]
@@ -298,45 +235,13 @@ tracks/2/keys = {
 
 [node name="Chest" type="Node2D"]
 script = ExtResource( 2 )
-
-[node name="GoodItems" type="Node2D" parent="."]
-z_index = 6
-
-[node name="Coin" parent="GoodItems" instance=ExtResource( 3 )]
-visible = false
-
-[node name="Reroll" parent="GoodItems" instance=ExtResource( 1 )]
-visible = false
-itemType = 1
-
-[node name="BadItems" type="Node2D" parent="."]
-z_index = 6
-
-[node name="Tax" parent="BadItems" instance=ExtResource( 17 )]
-visible = false
-itemType = 2
-
-[node name="BadReroll" parent="BadItems" instance=ExtResource( 16 )]
-visible = false
-itemType = 3
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/opening_bad = SubResource( 1 )
-anims/opening_good = SubResource( 2 )
-anims/roundup_bad = SubResource( 3 )
-anims/roundup_good = SubResource( 4 )
-anims/zoom = SubResource( 5 )
-
-[node name="Timer" type="Timer" parent="."]
+chest_type = 1
 
 [node name="ChestAnimatedSprite" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -100 )
 
-[node name="ItemsAnimatedSprite" type="AnimatedSprite" parent="."]
-visible = false
-frames = ExtResource( 15 )
-animation = "ru_bad"
-frame = 1
-playing = true
+[node name="ChestBonuses" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 1.00731, 1.00731 )
 
 [node name="sfx_opening" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 8 )
@@ -361,12 +266,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/opening_bad = SubResource( 1 )
+anims/opening_good = SubResource( 2 )
+anims/roundup_bad = SubResource( 3 )
+anims/roundup_good = SubResource( 4 )
+anims/zoom = SubResource( 5 )
+
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
 zoom = Vector2( 0.15, 0.15 )
 limit_smoothed = true
 smoothing_enabled = true
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_Opening_animation_finished"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_RoundUp_animation_finished"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

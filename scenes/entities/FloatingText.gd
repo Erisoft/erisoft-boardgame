@@ -4,7 +4,7 @@ onready var label = $Label
 onready var tween = $Tween
 
 var amount := 0
-var text 
+#var text 
 var type = ""
 
 var velocity = Vector2(0, 0)
@@ -16,13 +16,15 @@ func _ready() -> void:
 	match type:
 		"Gold":
 			label.set("custom_colors/font_color", Color.green)
+		"Heart":
+			label.set("custom_colors/font_color", Color.red)
 		"Tax":
 			max_size = Vector2(1.5, 1.5)
-			label.set("custom_colors/font_color", Color.red)
-		"Text":
-			label.set_text(text)
-			max_size = Vector2(1.5, 1.5)
-			label.set("custom_colors/font_color", Color.purple)
+			label.set("custom_colors/font_color", Color.violet)
+#		"Text":
+#			label.set_text(text)
+#			max_size = Vector2(1.5, 1.5)
+#			label.set("custom_colors/font_color", Color.purple)
 #		"Heal":
 #			label.set("custom_colors/font_color", Color.green)
 #		"Damage":

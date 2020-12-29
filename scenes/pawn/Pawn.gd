@@ -1,6 +1,7 @@
 extends Area2D
 
-var floating_text = load("res://scenes/entities/FloatingText.tscn")
+var floating_text_scene = load("res://scenes/entities/FloatingText.tscn")
+var speech_balloon_scene = load("res://scenes/UI/SpeechBalloon.tscn")
 
 var tile_size = 64
 var inputs = {"right" : Vector2.RIGHT,
@@ -15,18 +16,20 @@ onready var sprite = $Sprite
 onready var anim = $AnimationPlayer
 
 var index := 0
-var moving := false
+export var moving := false
 export var moved := false
 export var pawn_name : String
 export var id : int
 export var type : String
-var credits : int = 0
+var coins : int = 0
+var hearts : int = 0
 
 
 func _ready() -> void:
 #	position = position.snapped(Vector2.ONE * tile_size)
 #	position += Vector2.ONE * tile_size/2
 	anim.play("idle")
+	spawn_balloon("Happy Holydays by ERISOFT!")
 
 
 func spawn_dice(fixed : bool):
@@ -45,20 +48,29 @@ func roll_dice() -> void:
 	dice.roll()
 
 
-func credits_collected(amount):
-	credits += amount
-	Signals.emit_signal("credits_collected", credits)
+func add_coins(amount):
+	coins += amount
+	Signals.emit_signal("coin_collected", coins)
 	spawn_floating_text("Gold", amount)
+	
+func add_hearts(amount):
+	hearts += amount
+	Signals.emit_signal("heart_collected", hearts)
+	spawn_floating_text("Heart", amount)
 
 
-func tax_collected(amount):
-	credits -= amount
-	Signals.emit_signal("credits_collected", credits)
+func remove_coins(amount):
+	coins -= amount
+	Signals.emit_signal("coin_collected", coins)
 	spawn_floating_text("Tax", amount)
+	
+
+func remove_hearts(amount):
+	hearts -= amount
 
 
 func spawn_floating_text(_type = "", _amount = 0):
-	var ft = floating_text.instance()
+	var ft = floating_text_scene.instance()
 	ft.type = _type
 	ft.amount = _amount
 	self.add_child(ft)
@@ -87,12 +99,29 @@ func set_direction(dir):
 func play_bounce():
 	$sfx_bounce.play()
 
+
+func light_on(value):
+	if !value:
+		$Light2D.enabled = false
+	else:
+		$Light2D.enabled = true
+
+
 func spawn_floating_message(_type, _text):
-	var ft = floating_text.instance()
+	var ft = floating_text_scene.instance()
 	ft.type = _type
 	ft.text = _text
 	self.add_child(ft)
-	
+
+
+func spawn_balloon(_text: String):
+	var sp = speech_balloon_scene.instance()
+	sp.text = _text
+	sp.position = self.position
+	sp.position = Vector2(16, -16)
+	self.add_child(sp)
+
+
 func _unhandled_input(event):
 	for dir in inputs.keys():
 		if event.is_action_pressed(dir):
@@ -100,3 +129,11 @@ func _unhandled_input(event):
 
 func move(dir):
 	position += inputs[dir] * tile_size
+
+
+func can_pick():
+	if moving:
+		return false
+	else:
+		return true
+

@@ -1,7 +1,7 @@
 extends Node
 
 #This script is in charge of handling scripted main events in game
-var chest_scene = load("res://scenes/objects/Chest.tscn")
+var chest_scene = load("res://scenes/objects/chest.tscn")
 
 onready var game = $Game
 onready var main_camera = $MainCamera
@@ -10,6 +10,10 @@ onready var turns = $Game/TurnsHandler
 onready var pawns = $Game/TurnsHandler/Pawns
 onready var UI = $Game/UI
 
+var events = {
+	"dummy": false,
+	"clone" : false
+}
 var _pawn
 var event_active := false
 
@@ -27,25 +31,22 @@ func _physics_process(delta: float) -> void:
 
 
 func clone_event():
-	event_active = true
+	events.clone = true
+	$MainCamera/AnimationPlayer.play("fade_sky_out")
 	pawns.spawn_clone()
 	var clone = pawns.get_pawn("clone")
+	clone.light_on(true)
 	var player = pawns.get_pawn("player")
+	player.light_on(true)
 	var text = "You summoned an evil clone!"
 	clone.position = board.get_child(0).position
 	UI.show_screen_message(text)
-	yield(get_tree().create_timer(1), "timeout")
-	main_camera.position = clone.global_position
 	_pawn = clone
-#	main_camera.position = clone.global_position
-#	doppel.spawn_floating_message("Text", text)
+
 	yield(get_tree().create_timer(2), "timeout")
-	event_active = false
 	_pawn = player
 	Signals.emit_signal("event_ended")
 	print("clone event is over.")
-#	turns.set_current(current_pawn)
-#	game.end_turn()
 
 
 func chest_event(good : bool):
@@ -58,13 +59,15 @@ func chest_event(good : bool):
 	else:
 		c.chest_type = c.ChestTypes.BAD
 	
-	main_camera.current = false
-	c.set_camera_current(true)
+#	main_camera.current = false
+#	c.set_camera_current(true)
 	c.open_chest()
-	
+	print("chest event is over.")
 #	game.event_active = false
+
+
 func on_Action_ended(action_type):
 	if action_type == "chest":
 		main_camera.current = true
 		event_active = false
-	
+

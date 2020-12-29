@@ -1,12 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/tiles/tilea4.png" type="Texture" id=1]
 [ext_resource path="res://scenes/Tile.gd" type="Script" id=2]
 [ext_resource path="res://assets/fonts/SpaceMono-Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://scenes/objects/clone_deco.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/objects/Coin.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/objects/ChestAnimatedSprite.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/Sprites/banner.png" type="Texture" id=7]
+[ext_resource path="res://scenes/objects/Items.tscn" type="PackedScene" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 outline_size = 2
@@ -14,29 +11,78 @@ outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
 font_data = ExtResource( 3 )
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 32, 24 )
+[sub_resource type="CircleShape2D" id=2]
 
 [sub_resource type="Animation" id=3]
-resource_name = "zoom"
-length = 0.5
+resource_name = "collecting"
+length = 2.6
 tracks/0/type = "value"
-tracks/0/path = NodePath("Items:scale")
+tracks/0/path = NodePath("Items:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 1.5, 2.5, 2.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 3, 3 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, -50 ), Vector2( 0, -50 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Items:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.5, 2.5, 2.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 2, 2 ), Vector2( 2, 2 ), Vector2( 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Items:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 1.5, 2.5, 2.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Items:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1.4, 2.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Items:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 2.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
 }
 
 [node name="Tile" type="Node2D"]
+z_index = -1
+z_as_relative = false
 script = ExtResource( 2 )
 
-[node name="icon" type="Sprite" parent="."]
+[node name="TileSprite" type="Sprite" parent="."]
 position = Vector2( 0, 8 )
 scale = Vector2( 1, 0.666667 )
 texture = ExtResource( 1 )
@@ -57,30 +103,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Items" parent="." instance=ExtResource( 4 )]
+modulate = Color( 1, 1, 1, 0.980732 )
+animation = "chest_good"
+frame = 0
+playing = false
+
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 2 )
 
-[node name="Items" type="Node2D" parent="."]
-
-[node name="CloneSprite" parent="Items" instance=ExtResource( 4 )]
-
-[node name="Coin" parent="Items" instance=ExtResource( 5 )]
-visible = false
-itemType = 4
-
-[node name="ChestAnimatedSprite" parent="Items" instance=ExtResource( 6 )]
-visible = false
-
-[node name="StartSprite" type="Sprite" parent="Items"]
-visible = false
-position = Vector2( 8, -12 )
-scale = Vector2( 0.6, 0.6 )
-texture = ExtResource( 7 )
-hframes = 5
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/zoom = SubResource( 3 )
+playback_speed = 2.0
+anims/collecting = SubResource( 3 )
+anims/opening = SubResource( 3 )
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
