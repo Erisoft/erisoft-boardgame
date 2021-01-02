@@ -1,8 +1,6 @@
 extends Node
 
 #This script is in charge of handling scripted main events in game
-var chest_scene = load("res://scenes/objects/chest.tscn")
-
 onready var game = $Game
 onready var main_camera = $MainCamera
 onready var board = $Game/Tiles
@@ -20,10 +18,11 @@ var event_active := false
 
 func _ready() -> void:
 	_pawn = turns.get_current()
+# warning-ignore:return_value_discarded
 	Signals.connect("action_ended", self, "on_Action_ended")
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	main_camera.position = _pawn.global_position
 #	current_pawn = turns.get_current()
 #	if current_pawn != null and !game.game_over and event_active:
@@ -47,23 +46,6 @@ func clone_event():
 	_pawn = player
 	Signals.emit_signal("event_ended")
 	print("clone event is over.")
-
-
-func chest_event(good : bool):
-	event_active = true
-	var c = chest_scene.instance()
-	var current = turns.get_current()
-	current.add_child(c)
-	if good:
-		c.chest_type = c.ChestTypes.GOOD
-	else:
-		c.chest_type = c.ChestTypes.BAD
-	
-#	main_camera.current = false
-#	c.set_camera_current(true)
-	c.open_chest()
-	print("chest event is over.")
-#	game.event_active = false
 
 
 func on_Action_ended(action_type):

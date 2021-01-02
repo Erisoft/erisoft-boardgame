@@ -23,6 +23,7 @@ export var id : int
 export var type : String
 var coins : int = 0
 var hearts : int = 0
+var stars : int = 0
 
 
 func _ready() -> void:
@@ -51,12 +52,19 @@ func roll_dice() -> void:
 func add_coins(amount):
 	coins += amount
 	Signals.emit_signal("coin_collected", coins)
-	spawn_floating_text("Gold", amount)
-	
+#	spawn_floating_text("Coin", amount)
+
+
 func add_hearts(amount):
 	hearts += amount
 	Signals.emit_signal("heart_collected", hearts)
-	spawn_floating_text("Heart", amount)
+#	spawn_floating_text("Heart", amount)
+
+
+func add_stars(amount):
+	stars += amount
+	Signals.emit_signal("star_collected", stars)
+#	spawn_floating_text("Star", amount)
 
 
 func remove_coins(amount):
@@ -115,10 +123,11 @@ func spawn_floating_message(_type, _text):
 
 
 func spawn_balloon(_text: String):
+	print("spawn_balloon called")
 	var sp = speech_balloon_scene.instance()
 	sp.text = _text
 	sp.position = self.position
-	sp.position = Vector2(16, -16)
+	sp.position = Vector2(20, 20)
 	self.add_child(sp)
 
 

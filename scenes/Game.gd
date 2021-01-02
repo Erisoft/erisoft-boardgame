@@ -6,14 +6,11 @@ onready var UI = $UI
 onready var turns_handler = $TurnsHandler
 onready var pawns = $TurnsHandler/Pawns
 
-var chest = load("res://scenes/objects/chest.tscn")
-
 var board := []
 var game_over := true
 var penalty := false
 var current_pawn
 var _current_tile 
-var item_name : String = ""
 var loop : int = -1 #because get set on start
 var coins : int = 0
 var hearts : int = 0
@@ -21,34 +18,18 @@ var star : int = 0
 
 
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	Signals.connect("dice_rolled", self, "_on_Dice_Rolled")
-	Signals.connect("item_collected", self, "on_Item_collected")
+# warning-ignore:return_value_discarded
+	Signals.connect("item_collected", self, "_on_Item_Collected")
+# warning-ignore:return_value_discarded
 	Signals.connect("event_ended", self, "on_Event_ended")
+# warning-ignore:return_value_discarded
 	Signals.connect("lap_ended", self, "_on_Lap_Ended")
-	Signals.connect("coin_collected",self, "on_Coin_collected")
-	Signals.connect("heart_collected", self, "_on_Heart_Collected")
-	Signals.connect("chest_collected", self, "_on_Chest_Collected")
-	randomize()
+	
 	board = $Tiles.get_children()
 	turns_handler.call_deferred("reset_pawns")
 	_start_game()
-
-
-func _on_Coin_Collected(amount):
-	coins += amount
-	UI.update_coins(coins)
-	end_turn()
-
-
-func _on_Heart_Collected(amount):
-	hearts += amount
-	UI.update_hearts(hearts)
-	end_turn()
-
-
-func _on_Star_Collected(amount):
-	star += amount
-	end_turn()
 
 
 func _on_Dice_Rolled(dice_result) -> void:
@@ -63,22 +44,46 @@ func _on_Dice_Rolled(dice_result) -> void:
 		penalty = false
 
 
-func on_Item_collected(item_type):
-	print("on_Item_collected called")
-	match item_type:
-		"Gold":
-			current_pawn.add_coins(10)
+func _on_Item_Collected(item_name):
+	print("_on_Item_Collected called")
+	match item_name:
+		"coin":
+			current_pawn.add_coins(1)
+			current_pawn.spawn_balloon("Little by little...")
 			end_turn()
-		"Reroll":
+		"heart":
+			current_pawn.add_hearts(1)
+			current_pawn.spawn_balloon("Love is the way!")
+			end_turn()
+		"star":
+			current_pawn.add_stars(1)
+			current_pawn.spawn_balloon("You are a star!")
+			end_turn()
+		"coins":
+			current_pawn.add_coins(10)
+			current_pawn.spawn_balloon("Money doesn't buy happiness, but...")
+			end_turn()
+		"hearts":
+			current_pawn.add_hearts(10)
+			current_pawn.spawn_balloon("Lotsa love for me!")
+			end_turn()
+		"stars":
+			current_pawn.add_stars(10)
+			current_pawn.spawn_balloon("A whole universe!")
+			end_turn()
+		"reroll":
 			UI.show_game_message("Rolling the dice again!")
+			current_pawn.spawn_balloon("Onward, to glory!")
 			current_pawn.spawn_dice(false)
 			current_pawn.roll_dice()
-		"Tax":
+		"tax":
 			UI.show_game_message("Oof! Taxed!")
+			current_pawn.spawn_balloon("What the...! Even in a game???")
 			current_pawn.remove_coins(5)
 			end_turn()
-		"Bad Reroll":
+		"reroll_bad":
 			UI.show_game_message("Bad luck!")
+			current_pawn.spawn_balloon("Oh, noes!")
 			penalty = true
 			current_pawn.spawn_dice(false)
 			current_pawn.roll_dice()
@@ -153,40 +158,9 @@ func move_pawn(_amount : int, reverse : bool) -> void:
 
 func check_item_on_tile():
 	if _current_tile.get_has_item():
-		_current_tile.play_animation()
-		item_name = board[current_pawn.index].get_item_name()
-		match item_name:
-			"":
-				return
-			"coin":
-				_on_Coin_Collected(1)
-			"heart":
-				_on_Heart_Collected(1)
-			"star":
-				_on_Star_Collected(1)
-			"chest_good":
-				events.chest_event()
-				_on_Chest_Collected("good")
-			"chest_normal":
-				_on_Chest_Collected("normal")
-			"chest_bad":
-				_on_Chest_Collected("bad")
-				
-		_current_tile.set_has_item(false)
+		_current_tile.get_item()
 	else:
 		end_turn()
-
-
-func _on_Chest_Collected(chest_type : String):
-	match chest_type:
-		"good":
-			pass
-		"normal":
-			pass
-		"bad":
-			pass
-		_:
-			printerr("INVALID chest type.")
 
 
 func move_pawn_forward(step) -> void:
@@ -209,49 +183,6 @@ func move_pawn_backward(step) -> void:
 	current_pawn.index = index
 
 
-#func get_tile_type(index : int) -> String:
-#	_tile = $Tiles.get_child(index)
-#	print("landed on tile: ", _tile.type)
-#	return _tile.type
-	
-#func check_condition():
-#	current_pawn.moving = false
-#	match _tile.type:
-#		"credits":
-#			current_pawn.add_coins(_tile.coins)
-#			end_turn()
-#		"chest_good":
-#			events.chest_event(true)
-#		"chest_bad":
-#			events.chest_event(false)
-#		"clone":
-#			if current_pawn.is_in_group("Players") and !events.events.clone:
-#				events.clone_event()
-#			else:
-#				end_turn()
-#		_:
-#			print_debug("No type found on tile landed.")
-#			end_turn()
-#	_tile.empty = true
-#	_tile.play_animation()
-
-
-func on_Chest_collected(good):
-	print("on_Chest_collected called")
-#	events.chest_event(good)
-	end_turn()
-
-func spawn_chest(good : bool):
-	var c = chest.instance()
-	current_pawn.add_child(c)
-	c.global_position = current_pawn.global_position
-	if good:
-		c.chest_type = c.ChestTypes.GOOD
-	else:
-		c.chest_type = c.ChestTypes.BAD
-	c.open_chest()
-
-
 func _on_Lap_Ended():
 	if !game_over:
 		loop += 1
@@ -259,7 +190,7 @@ func _on_Lap_Ended():
 		$Tiles.reset_items_on_tiles()
 
 
-func game_end() -> void:
+func _end_game() -> void:
 	game_over = true
 	$Tiles.enabled = false
 	print("game over")

@@ -23,6 +23,7 @@ func get_current():
 
 
 func _ready() -> void:
+# warning-ignore:return_value_discarded
 	Signals.connect("pawn_moved", self, "on_Pawn_moved")
 	reset()
 
@@ -75,10 +76,10 @@ func get_next_pawn():
 #	print("current : ", pawns.get_child(turn_index), " turn index: ", turn_index)
 
 
-func is_turn_over() -> bool:
+func is_turn_over() -> void:
 #	var total = pawns.get_children().size()
 	var total = pawns.size()
-	var is_over : bool
+	var _is_over : bool
 #	for pawn in pawns.get_children():
 	for pawn in pawns:
 		if pawn.moved == true:
@@ -91,12 +92,12 @@ func is_turn_over() -> bool:
 			turn_count += 1
 #			print("turn count: ", turn_count)
 			reset_moves()
-			is_over = true
+			_is_over = true
 		else:
 #			print("Turn not over yet")
 #			print("Total: ", total, " count: ", count)
-			is_over = false
-	return is_over 
+			_is_over = false
+#	return is_over 
 
 
 func reset_moves():

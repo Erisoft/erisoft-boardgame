@@ -28,21 +28,21 @@ func roll():
 	$sfx_jump.play()
 
 
-func _roll_result(rigged : bool):
+func _roll_result(_rigged : bool):
 	randomize()
-	if !rigged:
+	if !_rigged:
 		var index = randi() % dice_faces.size()
 		dice_result = dice_faces[index]
 	else:
 		dice_result = fixed_result
 
-	$Sprite.frame = dice_result - 1
+	$Sprite.frame = (dice_result - 1)
 	Signals.emit_signal("dice_rolled", dice_result)
 	print("rolled a ", dice_result)
 
 
 func set_dice_side(value):
-	$Sprite.frame = value - 1
+	$Sprite.frame = (value - 1)
 
 
 func _on_AnimationPlayer_animation_finished(_anim_name: String) -> void:

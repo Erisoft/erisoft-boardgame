@@ -1,11 +1,22 @@
 extends Node
 
+# warning-ignore:unused_signal
 signal dice_rolled
+# warning-ignore:unused_signal
 signal item_collected
+# warning-ignore:unused_signal
 signal coin_collected
+# warning-ignore:unused_signal
 signal heart_collected
+# warning-ignore:unused_signal
+signal star_collected
+# warning-ignore:unused_signal
 signal chest_collected
+# warning-ignore:unused_signal
 signal pawn_moved
+# warning-ignore:unused_signal
 signal action_ended
+# warning-ignore:unused_signal
 signal event_ended
+# warning-ignore:unused_signal
 signal lap_ended

@@ -1,13 +1,12 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://assets/fonts/SpaceMono-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://assets/PXUI-Basic/panel_Example2.png" type="Texture" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://scenes/entities/ScreenMessage.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/UI/ui_heart.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/UI/ui_item_box.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/UI/ui.gd" type="Script" id=6]
 [ext_resource path="res://assets/fonts/SpaceMono-BoldItalic.ttf" type="DynamicFontData" id=7]
-[ext_resource path="res://scenes/UI/ui_coin.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/PXUI-Basic/panel_Example4.png" type="Texture" id=9]
 [ext_resource path="res://assets/PXUI-Basic/panel_Example3.png" type="Texture" id=10]
 
@@ -44,7 +43,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Top" type="MarginContainer" parent="Control"]
+[node name="TopCenter" type="MarginContainer" parent="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -225.0
@@ -54,12 +53,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="Control/Top"]
+[node name="TextureRect" type="TextureRect" parent="Control/TopCenter"]
 margin_right = 450.0
 margin_bottom = 150.0
 texture = ExtResource( 9 )
 
-[node name="Turns" type="HBoxContainer" parent="Control/Top/TextureRect"]
+[node name="Turns" type="HBoxContainer" parent="Control/TopCenter/TextureRect"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -72,7 +71,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TurnLabel" type="Label" parent="Control/Top/TextureRect/Turns"]
+[node name="TurnLabel" type="Label" parent="Control/TopCenter/TextureRect/Turns"]
 margin_top = 13.0
 margin_right = 75.0
 margin_bottom = 49.0
@@ -85,7 +84,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ValueLabel" type="Label" parent="Control/Top/TextureRect/Turns"]
+[node name="ValueLabel" type="Label" parent="Control/TopCenter/TextureRect/Turns"]
 margin_left = 79.0
 margin_top = 13.0
 margin_right = 139.0
@@ -99,7 +98,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Laps" type="HBoxContainer" parent="Control/Top/TextureRect"]
+[node name="Laps" type="HBoxContainer" parent="Control/TopCenter/TextureRect"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -112,7 +111,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LapsLabel" type="Label" parent="Control/Top/TextureRect/Laps"]
+[node name="LapsLabel" type="Label" parent="Control/TopCenter/TextureRect/Laps"]
 margin_top = 13.0
 margin_right = 75.0
 margin_bottom = 49.0
@@ -125,7 +124,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ValueLabel" type="Label" parent="Control/Top/TextureRect/Laps"]
+[node name="ValueLabel" type="Label" parent="Control/TopCenter/TextureRect/Laps"]
 margin_left = 79.0
 margin_top = 13.0
 margin_right = 139.0
@@ -142,62 +141,65 @@ __meta__ = {
 [node name="ScreenMessage" parent="Control" instance=ExtResource( 4 )]
 mouse_filter = 2
 
-[node name="Bottom" type="MarginContainer" parent="Control"]
-anchor_left = 0.5
+[node name="BottomLeft" type="MarginContainer" parent="Control"]
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -960.0
 margin_top = -240.0
-margin_right = 960.0
-rect_min_size = Vector2( 0, 240 )
+margin_right = 600.0
+rect_min_size = Vector2( 350, 240 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/Bottom"]
-margin_right = 1920.0
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/BottomLeft"]
+margin_right = 600.0
 margin_bottom = 240.0
-rect_min_size = Vector2( 1920, 240 )
+rect_min_size = Vector2( 450, 240 )
 size_flags_horizontal = 3
+alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Control/Bottom/HBoxContainer"]
-margin_right = 450.0
+[node name="TextureRect" type="TextureRect" parent="Control/BottomLeft/HBoxContainer"]
+margin_left = 75.0
+margin_right = 525.0
 margin_bottom = 240.0
 rect_min_size = Vector2( 450, 240 )
 texture = ExtResource( 2 )
 expand = true
-stretch_mode = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/Bottom/HBoxContainer/TextureRect"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/BottomLeft/HBoxContainer/TextureRect"]
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -218.0
-margin_top = 89.0
-margin_right = -50.0
-margin_bottom = -72.0
+margin_left = -293.0
+margin_top = 96.0
+margin_right = -45.0
+margin_bottom = -64.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UICoin" parent="Control/Bottom/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 8 )]
+[node name="UIItemCoin" parent="Control/BottomLeft/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 5 )]
 margin_left = 0.0
 margin_top = 0.0
-margin_right = 82.0
-margin_bottom = 79.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+margin_right = 80.0
+margin_bottom = 80.0
+iconType = 1
 
-[node name="UIHeart" parent="Control/Bottom/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 5 )]
-margin_left = 86.0
+[node name="UIItemHeart" parent="Control/BottomLeft/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 5 )]
+margin_left = 84.0
 margin_top = 0.0
-margin_right = 168.0
-margin_bottom = 79.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+margin_right = 164.0
+margin_bottom = 80.0
+iconType = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/Bottom/HBoxContainer/TextureRect"]
+[node name="UIItemStar" parent="Control/BottomLeft/HBoxContainer/TextureRect/HBoxContainer" instance=ExtResource( 5 )]
+margin_left = 168.0
+margin_top = 0.0
+margin_right = 248.0
+margin_bottom = 80.0
+iconType = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/BottomLeft/HBoxContainer/TextureRect"]
 margin_left = 48.0
 margin_top = 56.0
 margin_right = 165.0
@@ -206,7 +208,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Control/Bottom/HBoxContainer/TextureRect/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/BottomLeft/HBoxContainer/TextureRect/VBoxContainer"]
 margin_right = 117.0
 margin_bottom = 33.0
 custom_fonts/font = SubResource( 2 )
@@ -218,36 +220,51 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="Control/Bottom/HBoxContainer/TextureRect/VBoxContainer"]
+[node name="Sprite" type="Sprite" parent="Control/BottomLeft/HBoxContainer/TextureRect/VBoxContainer"]
 position = Vector2( 56, 70.75 )
 texture = ExtResource( 3 )
 
-[node name="PanelContainer" type="TextureRect" parent="Control/Bottom/HBoxContainer"]
-margin_left = 454.0
-margin_right = 1920.0
+[node name="BottomRight" type="MarginContainer" parent="Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -960.0
+margin_top = -240.0
+rect_min_size = Vector2( 0, 240 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="TextureRect" parent="Control/BottomRight"]
+margin_right = 960.0
 margin_bottom = 240.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 10 )
 expand = true
+stretch_mode = 7
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/Bottom/HBoxContainer/PanelContainer"]
-margin_left = 122.0
-margin_top = 7.0
-margin_right = 1346.0
-margin_bottom = 233.0
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/BottomRight/PanelContainer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -920.0
+margin_top = -240.0
+margin_right = -40.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MessageLabel" type="Label" parent="Control/Bottom/HBoxContainer/PanelContainer"]
+[node name="MessageLabel" type="Label" parent="Control/BottomRight/PanelContainer"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 130.0
 margin_top = -56.0
-margin_right = 1146.0
+margin_right = 480.0
 margin_bottom = 64.0
 custom_fonts/font = SubResource( 1 )
 text = "Game messages"
@@ -257,10 +274,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RestartButton" type="Button" parent="Control/Bottom/HBoxContainer/PanelContainer"]
-margin_left = 1226.0
+[node name="RestartButton" type="Button" parent="Control/BottomRight/PanelContainer"]
+margin_left = 752.0
 margin_top = 133.0
-margin_right = 1343.0
+margin_right = 869.0
 margin_bottom = 175.0
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 0.117647, 0.831373, 1 )
@@ -269,4 +286,18 @@ flat = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Control/Bottom/HBoxContainer/PanelContainer/RestartButton" to="." method="_on_RestartButton_pressed"]
+
+[node name="CloneButton" type="Button" parent="Control/BottomRight/PanelContainer"]
+margin_left = 616.0
+margin_top = 80.0
+margin_right = 868.0
+margin_bottom = 122.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 1, 0.117647, 0.831373, 1 )
+text = "Fire clone event"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Control/BottomRight/PanelContainer/RestartButton" to="." method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="Control/BottomRight/PanelContainer/CloneButton" to="." method="_on_CloneButton_pressed"]

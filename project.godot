@@ -8,14 +8,9 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node2D",
-"class": "Item",
-"language": "GDScript",
-"path": "res://scenes/objects/item.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"Item": ""
+
 }
 
 [application]
@@ -75,5 +70,4 @@ right={
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
 environment/default_environment="res://default_env.tres"

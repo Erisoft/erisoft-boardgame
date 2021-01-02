@@ -1,38 +1,47 @@
 extends CanvasLayer
 
-var scree_message_scene = load("res://scenes/entities/ScreenMessage.tscn")
 
 var cursor_image = load("res://assets/Sprites/Cursor.png")
 
-onready var message_label = $Control/Bottom/HBoxContainer/PanelContainer/MessageLabel
-onready var coin_label = $Control/Bottom/HBoxContainer/TextureRect/HBoxContainer/UICoin/Value
-onready var heart_label = $Control/Bottom/HBoxContainer/TextureRect/HBoxContainer/UIHeart/Value
-onready var turn_label = $Control/Top/TextureRect/Turns/ValueLabel
-onready var loop_label = $Control/Top/TextureRect/Laps/ValueLabel
+onready var message_label = $Control/BottomRight/PanelContainer/MessageLabel
+onready var ui_coin= $Control/BottomLeft/HBoxContainer/TextureRect/HBoxContainer/UIItemCoin
+onready var ui_heart = $Control/BottomLeft/HBoxContainer/TextureRect/HBoxContainer/UIItemHeart
+onready var ui_star = $Control/BottomLeft/HBoxContainer/TextureRect/HBoxContainer/UIItemStar
+onready var turn_label = $Control/TopCenter/TextureRect/Turns/ValueLabel
+onready var loop_label = $Control/TopCenter/TextureRect/Laps/ValueLabel
 onready var screen_message = $Control/ScreenMessage
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+# warning-ignore:return_value_discarded
+	Signals.connect("coin_collected", self, "update_coins")
+# warning-ignore:return_value_discarded
+	Signals.connect("heart_collected", self, "update_hearts")
+# warning-ignore:return_value_discarded
+	Signals.connect("star_collected", self, "update_stars")
 	Input.set_custom_mouse_cursor(cursor_image) #Input.CURSOR_ARROW, Vector2(32, 32))
 	update_coins(0)
 	update_hearts(0)
+	update_stars(0)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
+
 func update_coins(amount):
-	coin_label.text = str(amount)
+	ui_coin.label.text = str(amount)
 
 
 func update_hearts(amount):
-	heart_label.text = str(amount)
+	ui_heart.label.text = str(amount)
 
 
-func spawn_screen_message(text : String):
-	var sm = scree_message_scene.instance()
-	sm.text = text
-	$CenterContainer.add_child(sm)
+func update_stars(amount):
+	ui_star.label.text = str(amount)
+
+
+#func spawn_screen_message(text : String):
+#	var sm = scree_message_scene.instance()
+#	sm.text = text
+#	$CenterContainer.add_child(sm)
 	
 	
 func show_screen_message(text : String):
@@ -46,4 +55,9 @@ func show_game_message(_text):
 
 
 func _on_RestartButton_pressed() -> void:
+# warning-ignore:return_value_discarded
 	get_tree().reload_current_scene()
+
+
+func _on_CloneButton_pressed() -> void:
+	get_parent().get_parent().clone_event()

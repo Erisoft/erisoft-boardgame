@@ -48,41 +48,51 @@ _has_item = true
 
 [node name="Tile7" parent="." instance=ExtResource( 1 )]
 position = Vector2( 352, 192 )
+tileType = 6
 
 [node name="Tile8" parent="." instance=ExtResource( 1 )]
 position = Vector2( 352, 128 )
+tileType = 1
 dir = 3
 
 [node name="Tile9" parent="." instance=ExtResource( 1 )]
 position = Vector2( 416, 128 )
+tileType = 2
 dir = 3
 
 [node name="Tile10" parent="." instance=ExtResource( 1 )]
 position = Vector2( 480, 128 )
+tileType = 3
 dir = 1
 
 [node name="Tile11" parent="." instance=ExtResource( 1 )]
 position = Vector2( 480, 192 )
+tileType = 4
 dir = 3
 
 [node name="Tile12" parent="." instance=ExtResource( 1 )]
 position = Vector2( 544, 192 )
+tileType = 5
 dir = 3
 
 [node name="Tile13" parent="." instance=ExtResource( 1 )]
 position = Vector2( 608, 192 )
+tileType = 6
 dir = 3
 
 [node name="Tile14" parent="." instance=ExtResource( 1 )]
 position = Vector2( 672, 192 )
+tileType = 1
 dir = 1
 
 [node name="Tile15" parent="." instance=ExtResource( 1 )]
 position = Vector2( 672, 256 )
+tileType = 2
 dir = 1
 
 [node name="Tile16" parent="." instance=ExtResource( 1 )]
 position = Vector2( 672, 320 )
+tileType = 3
 dir = 3
 
 [node name="Tile17" parent="." instance=ExtResource( 1 )]

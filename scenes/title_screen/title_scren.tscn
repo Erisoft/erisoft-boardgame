@@ -1,59 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/parallax_background/game_background_1.png" type="Texture" id=1]
 [ext_resource path="res://scenes/pawn/Pawn.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/dice/Dice.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/objects/items/_Star.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/title_screen/title_scren.gd" type="Script" id=5]
-[ext_resource path="res://scenes/objects/ChestAnimatedSprite.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/fonts/SpaceMono-Bold.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://scenes/entities/WorldEnvironment.tscn" type="PackedScene" id=8]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Node2D
-
-
-enum ItemTypes {GOLD, REROLL, TAX, BAD_REROLL, NULL}
-export (ItemTypes) var itemType = ItemTypes.GOLD setget set_item_type, get_item_type
-func set_item_type(value):
-	itemType = value
-#	$ItemsAnimatedSprite.animation = itemType
-func get_item_type():
-	return itemType
-
-var items = {
-	\"coin\" : \"coin\"
-}
-var type := \"\"
-
-
-func _ready() -> void:
-#	$ItemsAnimatedSprite.animation = 0
-	match itemType:
-		ItemTypes.GOLD:
-			type = \"Gold\"
-		ItemTypes.REROLL:
-			type = \"Reroll\"
-		ItemTypes.TAX:
-			type = \"Tax\"
-		ItemTypes.BAD_REROLL:
-			type = \"Bad Reroll\"
-		ItemTypes.NULL:
-			type = \"\"
-	
-	$Label.text = type
-
-
-func play_animation():
-	$AnimatedSprite.play()
-
-
-func _on_Area2D_area_entered(area: Area2D) -> void:
-	if area.has_method(\"can_pick\"):
-		pass
-"
-
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 44
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
@@ -94,21 +48,6 @@ rigged = false
 position = Vector2( 955, 456 )
 scale = Vector2( 5, 5 )
 
-[node name="Star" parent="Deco" instance=ExtResource( 4 )]
-position = Vector2( 960, 288 )
-scale = Vector2( 5, 5 )
-script = SubResource( 1 )
-itemType = 4
-
-[node name="ChestAnimatedSprite" parent="Deco" instance=ExtResource( 6 )]
-position = Vector2( 1184, 480 )
-scale = Vector2( 5, 5 )
-
-[node name="ChestAnimatedSprite2" parent="Deco" instance=ExtResource( 6 )]
-position = Vector2( 736, 480 )
-scale = Vector2( 5, 5 )
-animation = "good_chest"
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -125,7 +64,7 @@ __meta__ = {
 [node name="StartButton" type="Button" parent="MarginContainer"]
 margin_right = 1920.0
 margin_bottom = 72.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.968627, 0.333333, 0.913725, 1 )
 custom_colors/font_color_hover = Color( 0.678431, 0.027451, 0.666667, 1 )
 text = "Start!"

@@ -2,9 +2,6 @@ extends Node2D
 
 enum ItemTypes {COIN = 0, HEART = 1, CHEST_GOOD = 2, CHEST_BAD = 3}
 
-
-
-var item : Item
 export var fill_grid := false
 
 var _index : int
@@ -12,9 +9,6 @@ var enabled := false
 var tiles := []
 var checkpoint : bool
 
-
-func _enter_tree() -> void:
-	pass
 
 func _ready() -> void:
 	tiles = self.get_children()
